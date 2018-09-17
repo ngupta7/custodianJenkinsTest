@@ -1,0 +1,14 @@
+policies:
+  - name: ec2-create-ebs-snapshots
+    resource: ec2
+    mode:
+      type: periodic
+      role: arn:aws:iam::960706776249:role/Cloudcustodian
+      schedule: "rate(5 minutes)"
+    actions:
+       - type: snapshot
+         copy-tags:
+             - Application
+             - creator
+             - environment
+             - creator

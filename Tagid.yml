@@ -1,0 +1,19 @@
+policies:
+
+- name: ec2-auto-tag-user-who-started-last-1
+  resource: ec2
+  description: |
+    Tag any started instance with the ID of who created it
+  mode:
+    type: cloudtrail
+    role: arn:aws:iam::572549618152:role/custodian-tags
+    events:
+       - source: ec2.amazonaws.com
+         event: StartInstances
+         ids: "responseElements.instancesSet.items[].instanceId"
+         awsRegion: "us-east-1"
+  actions:
+   - type: auto-tag-user
+     tag: CreatorName
+     principal_id_tag: CreatorId ‘’'
+

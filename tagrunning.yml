@@ -1,0 +1,12 @@
+policies:
+  - name: ec2-tag-running
+    resource: ec2
+    mode:
+      type: cloudtrail
+      role: arn:aws:iam::572549618152:role/Cloudcustodian
+      events:
+       - RunInstances
+    filters:
+     -  tag:custodian: present
+    actions:
+      - stop

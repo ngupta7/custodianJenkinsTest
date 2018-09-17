@@ -1,0 +1,18 @@
+policies:
+- name: copy-instance-tags
+  resource: ebs
+  mode:
+      type: periodic
+      role: arn:aws:iam::960706776249:role/Cloudcustodian
+      schedule: "rate(5 minutes)"
+  filters:
+      - type: value
+        key: "Attachments[0].Device"
+        value: not-null
+  actions:
+      - type: copy-instance-tags
+        tags:
+          - Application
+          - Project
+          - environment
+          - creator

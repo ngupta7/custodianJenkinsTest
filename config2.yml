@@ -1,0 +1,13 @@
+policies:
+- name: ec2-instance-too-large-resizer
+  resource: ec2
+  filters:
+    - type: value
+      key: InstanceType
+      op: in
+      value: t2.nano
+  actions:
+    - type: resize
+      restart: true
+      type-map: t2.micro
+

@@ -1,0 +1,15 @@
+policies:
+  - name: nothing
+    resource: s3
+    comment: policy that does nothing to help with cleanup
+    mode:
+      role: arn:aws:iam::572549618152:role/S3LambdaRole
+      type: cloudtrail
+      events:
+        - source: s3.amazonaws.com
+          event: CreateBucket
+          ids: requestParameters.bucketName
+    filters:
+      - "tag:BogusTag": present
+    actions:
+      - no-op

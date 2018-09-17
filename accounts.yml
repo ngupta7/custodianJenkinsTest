@@ -1,0 +1,6 @@
+accounts:
+- account_id: '149989091254'
+  name: account-1
+  regions:
+  - us-east-1
+  role: arn:aws:iam::149989091254:role/Custodian

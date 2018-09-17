@@ -1,0 +1,25 @@
+policies:
+- name: sg-auto-tag-user
+  tags: [Realtime,Tag]
+  resource: security-group
+  description: |
+    Creates a Tag called CreatorName with a value of the user who created the Security Group
+  mode:
+      type: cloudtrail
+      role: arn:aws:iam::572549618152:role/Cloudcustodian
+      events:
+        - source: ec2.amazonaws.com
+          event: AuthorizeSecurityGroupIngress
+          ids: "requestParameters.groupId"
+        - source: ec2.amazonaws.com
+          event: AuthorizeSecurityGroupEgress
+          ids: "requestParameters.groupId"
+        - source: ec2.amazonaws.com
+          event: RevokeSecurityGroupEgress
+          ids: "requestParameters.groupId"
+        - source: ec2.amazonaws.com
+          event: RevokeSecurityGroupIngress
+          ids: "requestParameters.groupId"
+  actions:
+    - type: auto-tag-user
+      tag: CreatorName

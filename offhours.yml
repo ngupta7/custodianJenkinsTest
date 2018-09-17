@@ -1,0 +1,39 @@
+policies:
+- name: asg-offhours-stop
+  resource: asg
+  description: |
+      Suspends autoscaling group  which has a downtime_offhours tag set if the day and time
+      specified in the tag match the current day and time. 
+  mode:
+    type: periodic
+    role: arn:aws:iam::572549618152:role/Cloudcustodian
+    schedule: "ratei(15 minutes)"
+    timeout: 180
+  filters:
+   - type: offhour
+     tag: downtime_offhours
+     opt-out: true
+     default_tz: it
+     offhour: 21
+  actions:
+   - suspend
+
+
+- name: asg-offhours-start
+  resource: asg
+  description: |
+      Resumes autoscaling group which  has a downtime_offhours tag set if the day and time specified 
+      in the tag match the current day and time.
+  mode:
+    type: periodic
+    role: arn:aws:iam::572549618152:role/Cloudcustodian
+    schedule: "rate(5 minutes)"
+    timeout: 180
+  filters:
+   - type: onhour
+     tag: downtime_offhours
+     opt-out: true
+     default_tz: it
+     onhour: 7
+  actions:
+   - resume

@@ -1,0 +1,18 @@
+policies:
+   - name: name-ec2-volumes-2
+     description: |
+       to tag ec2 instance
+     resource: ec2
+     mode:
+       type: cloudtrail
+       role: arn:aws:iam::572549618152:role/Cloudcustodian
+       events:
+         - source: ec2.amazonaws.com
+           event: ListInstances
+           ids: "responseElements.instancesSet.items[].instanceId"
+     filters:
+       - type: value
+         key: InstanceType
+         value:
+           -t2.micro
+         op: in

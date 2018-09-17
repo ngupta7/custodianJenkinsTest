@@ -1,0 +1,39 @@
+policies:
+- name: sg-fast-revert
+  resource: security-group
+  filters:
+      - GroupId: "sg-220123a1"
+      - type: diff
+        selector: date
+        selector_value: "2018/07/25 13:05Z"
+  actions:
+      - patch
+      
+
+  mode:
+      type: cloudtrail
+      role: arn:aws:iam::572549618152:role/Cloudcustodian
+      events:
+        - source: ec2.amazonaws.com
+          event: AuthorizeSecurityGroupIngress
+          ids: "requestParameters.groupId"
+
+        - source: ec2.amazonaws.com
+          event: CreateTags
+          ids: "requestParameters.resourcesSet.items[].resourceId"
+
+        - source: ec2.amazonaws.com
+          event: DeleteTags
+          ids: "requestParameters.resourcesSet.items[].resourceId"
+
+        - source: ec2.amazonaws.com
+          event: AuthorizeSecurityGroupEgress
+          ids: "requestParameters.groupId"
+
+        - source: ec2.amazonaws.com
+          event: RevokeSecurityGroupEgress
+          ids: "requestParameters.groupId"
+
+        - source: ec2.amazonaws.com
+          event: RevokeSecurityGroupIngress
+          ids: "requestParameters.groupId"
