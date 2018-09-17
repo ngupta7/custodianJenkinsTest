@@ -2,7 +2,7 @@ policies:
 - name: ec2-auto-tag-user
   resource: ec2
   filters:
-    - tag:creator: absent
+    - tag:nehacustodian: absent
   actions:
     - type: tag
       key: custodian
